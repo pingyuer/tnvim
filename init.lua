@@ -3,9 +3,9 @@ vim.g.have_nerd_font = false
 
 
 -- basic config
-vim.opt.ts = 2
-vim.opt.shiftwidth = 2
-vim.opt.sw = 2
+vim.opt.ts = 4
+vim.opt.shiftwidth = 4
+vim.opt.sw = 4
 
 vim.opt.number = true
 vim.opt.mouse = 'a'
@@ -58,7 +58,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 
-
 -- config plugin manager lazypath
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
@@ -67,9 +66,25 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
-vim.keymap.set('n', '<leader>tt', '<cmd> echo "' .. lazypath .. '" <CR>')
-
 require('lazy').setup({
+  'tpope/vim-sleuth',
+  'numToStr/Comment.nvim',
 
+  { -- Useful plugin to show you pending keybinds.
+  'folke/which-key.nvim',
+  event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+  config = function() -- This is the function that runs, AFTER loading
+    require('which-key').setup()
+    -- Document existing key chains
+    require('which-key').register {
+      ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+      ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+      ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+      ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+      ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+    }
+  end,
+  },
+  --- https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
 
 })
